@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import api from "../UI/api";
 import Carousel from "../UI/Carousel";
 import Skeleton from "../UI/Skeleton";
-
 
 const CollectionSkeleton = () => (
   <div className="hot-collection-slide">
@@ -26,25 +24,44 @@ const CollectionSkeleton = () => (
 const HotCollections = () => {
   const [collections, setCollections] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    api
-      .get("/")
-      .then((response) => {
-        setCollections(response.data);
-      })
-      .catch((error) => {
-        console.error(error);
-      })
-      .finally(() => {
-        setLoading(false)
-      })
+    const controller = new AbortController();
+
+    async function fetchData() {
+      try {
+        const response = await fetch(
+          "https://us-central1-nft-cloud-functions.cloudfunctions.net/hotCollections",
+          { signal: controller.signal },
+        );
+
+        if (!response.ok) {
+          throw new Error("Could not load collections");
+        }
+
+        const data = await response.json();
+
+        if (!Array.isArray(data)) {
+          throw new Error("Invalid collections response");
+        }
+
+        setCollections(data);
+      } catch (err) {
+        if (err.name !== "AbortError") {
+          setError(err.message);
+        }
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchData();
+
+    return () => controller.abort();
   }, []);
 
-
-
   return (
-   
     <section id="section-collections" className="no-bottom">
       <div className="container">
         <div className="row">
@@ -57,9 +74,9 @@ const HotCollections = () => {
           <div className="col-lg-12">
             <Carousel className="hot-collections-slider">
               {loading
-                ? new Array(4).fill(null).map((_, index) => (
-                    <CollectionSkeleton key={index} />
-                  ))
+                ? new Array(4)
+                    .fill(null)
+                    .map((_, index) => <CollectionSkeleton key={index} />)
                 : collections.map((collection) => (
                     <div className="hot-collection-slide" key={collection.id}>
                       <div className="nft_coll">
@@ -96,7 +113,6 @@ const HotCollections = () => {
         </div>
       </div>
     </section>
-    
   );
 };
 
