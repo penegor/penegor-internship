@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import axios from "axios";
 import { Link } from "react-router-dom";
 import Carousel from "../UI/Carousel";
 import Skeleton from "../UI/Skeleton";
@@ -27,39 +28,16 @@ const HotCollections = () => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    const controller = new AbortController();
-
-    async function fetchData() {
-      try {
-        const response = await fetch(
-          "https://us-central1-nft-cloud-functions.cloudfunctions.net/hotCollections",
-          { signal: controller.signal },
-        );
-
-        if (!response.ok) {
-          throw new Error("Could not load collections");
-        }
-
-        const data = await response.json();
-
-        if (!Array.isArray(data)) {
-          throw new Error("Invalid collections response");
-        }
-
-        setCollections(data);
-      } catch (err) {
-        if (err.name !== "AbortError") {
-          setError(err.message);
-        }
-      } finally {
-        setLoading(false);
-      }
-    }
-
-    fetchData();
-
-    return () => controller.abort();
-  }, []);
+  axios.get('https://us-central1-nft-cloud-functions.cloudfunctions.net/hotCollections')
+    .then(response => {
+      setCollections(response.data);
+      setLoading(false);
+    })
+    .catch(err => {
+      setError(err.message);
+      setLoading(false);
+    });
+}, []);
 
   return (
     <section id="section-collections" className="no-bottom">
