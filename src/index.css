@@ -29,6 +29,11 @@ GLOBAL CAROUSEL STYLING
 	box-sizing: border-box;
 }
 
+.new-item-slide {
+	padding: 0 10px;
+	box-sizing: border-box;
+}
+
 .hot-collections-slider {
 	position: relative;
 }
