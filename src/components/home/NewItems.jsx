@@ -1,9 +1,10 @@
-import React, {useEffect, useState} from "react";
-import axios from "axios";
+import React from "react";
 import { Link } from "react-router-dom";
 import Carousel from "../UI/Carousel";
 import CountdownTimer from "../UI/CountdownTimer";
 import Skeleton from "../UI/Skeleton";
+import { useApi } from "../../hooks/useApi";
+import { ENDPOINTS } from "../../api/endpoints";
 
 const NewItemSkeleton = () => (
   <div className="new-item-slide">
@@ -27,21 +28,13 @@ const NewItemSkeleton = () => (
 );
 
 const NewItems = () => {
-  const [items, setItems] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null)
+  const { data: items, loading, error } = useApi({
+    url: ENDPOINTS.newItems,
+  });
 
- useEffect(() => {
-  axios.get('https://us-central1-nft-cloud-functions.cloudfunctions.net/newItems')
-    .then(response => {
-      setItems(response.data);
-      setLoading(false);
-    })
-    .catch(err => {
-      setError(err.message);
-      setLoading(false);
-    });
-}, []);
+  if (error) {
+    return <p>Error: {error}</p>;
+  }
 
   return (
     <section id="section-items" className="no-bottom">

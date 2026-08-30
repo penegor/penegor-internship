@@ -1,7 +1,8 @@
-import React, {useState, useEffect} from "react";
-import axios from "axios";
+import React from "react";
 import { Link } from "react-router-dom";
 import Skeleton from "../UI/Skeleton";
+import { useApi } from "../../hooks/useApi";
+import { ENDPOINTS } from "../../api/endpoints";
 
 const TopSellerSkeleton = () => (
   <li>
@@ -17,21 +18,13 @@ const TopSellerSkeleton = () => (
 );
 
 const TopSellers = () => {
-  const [items, setItems] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null)
+  const { data: items, loading, error } = useApi({
+    url: ENDPOINTS.topSellers,
+  });
 
- useEffect(() => {
-  axios.get('https://us-central1-nft-cloud-functions.cloudfunctions.net/topSellers')
-    .then(response => {
-      setItems(response.data);
-      setLoading(false);
-    })
-    .catch(err => {
-      setError(err.message);
-      setLoading(false);
-    });
-}, []);
+  if (error) {
+    return <p>Error: {error}</p>;
+  }
 
 
   return (
