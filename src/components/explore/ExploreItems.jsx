@@ -1,12 +1,13 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import AuthorImage from "../../images/author_thumbnail.jpg";
 import nftImage from "../../images/nftImage.jpg";
 import Skeleton from "../UI/Skeleton";
 import CountdownTimer from "../UI/CountdownTimer";
+import { useApi } from "../../hooks/useApi";
+import { ENDPOINTS } from "../../api/endpoints";
 
-const NewItemSkeleton = () => (
+const ExploreItemSkeleton = () => (
   <div
     className="d-item col-lg-3 col-md-6 col-sm-6 col-xs-12"
     style={{ display: "block", backgroundSize: "cover" }}
@@ -31,33 +32,17 @@ const NewItemSkeleton = () => (
 );
 
 const ExploreItems = () => {
-  const [items, setItems] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
   const [visibleCount, setVisibleCount] = useState(8);
   const [filter, setFilter] = useState("");
 
-  useEffect(() => {
-    setLoading(true);
+  const { data: items, loading, error } = useApi({
+    url: ENDPOINTS.explore,
+    params: { filter },
+  });
 
-    axios
-      .get(
-        "https://us-central1-nft-cloud-functions.cloudfunctions.net/explore",
-        {
-          params: {
-            filter,
-          },
-        },
-      )
-      .then((response) => {
-        setItems(response.data);
-        setLoading(false);
-      })
-      .catch((err) => {
-        setError(err.message);
-        setLoading(false);
-      });
-  }, [filter]);
+  if (error) {
+    return <p>Error: {error}</p>;
+  }
 
   const visibleItems = items.slice(0, visibleCount);
 
@@ -81,7 +66,7 @@ const ExploreItems = () => {
       </div>
       {loading
         ? Array.from({ length: 8 }, (_, index) => (
-            <NewItemSkeleton key={index} />
+            <ExploreItemSkeleton key={index} />
           ))
         : visibleItems.map((item, index) => (
             <div

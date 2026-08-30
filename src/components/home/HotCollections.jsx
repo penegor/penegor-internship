@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
+import React from "react";
 import { Link } from "react-router-dom";
 import Carousel from "../UI/Carousel";
 import Skeleton from "../UI/Skeleton";
+import { useApi } from "../../hooks/useApi";
+import { ENDPOINTS } from "../../api/endpoints";
 
 const CollectionSkeleton = () => (
   <div className="hot-collection-slide">
@@ -23,21 +24,13 @@ const CollectionSkeleton = () => (
 );
 
 const HotCollections = () => {
-  const [collections, setCollections] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const { data: collections, loading, error } = useApi({
+    url: ENDPOINTS.hotCollections,
+  });
 
-  useEffect(() => {
-  axios.get('https://us-central1-nft-cloud-functions.cloudfunctions.net/hotCollections')
-    .then(response => {
-      setCollections(response.data);
-      setLoading(false);
-    })
-    .catch(err => {
-      setError(err.message);
-      setLoading(false);
-    });
-}, []);
+  if (error) {
+    return <p>Error: {error}</p>;
+  }
 
   return (
     <section id="section-collections" className="no-bottom">
