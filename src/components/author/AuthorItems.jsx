@@ -1,7 +1,6 @@
 import React from "react";
 import { Link, useParams } from "react-router-dom";
 import AuthorImage from "../../images/author_thumbnail.jpg";
-import nftImage from "../../images/nftImage.jpg";
 import { ENDPOINTS } from "../../api/endpoints";
 import { useApi } from "../../hooks/useApi";
 import Skeleton from "../UI/Skeleton";
@@ -77,7 +76,7 @@ const AuthorItems = () => {
                       </div>
                     </div>
                   </div>
-                  <Link to="/item-details">
+                  <Link to={`/item-details/${item.nftId}`}>
                     <img
                       src={item.nftImage}
                       className="lazy nft__item_preview"
