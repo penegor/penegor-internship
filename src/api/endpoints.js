@@ -3,4 +3,5 @@ export const ENDPOINTS = {
   newItems: "/newItems",
   topSellers: "/topSellers",
   explore: "/explore",
+  author: "/authors"
 };
