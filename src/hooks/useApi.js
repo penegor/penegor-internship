@@ -5,6 +5,7 @@ export function useApi({ url, params = {}, defaultValue = [] }) {
   const [data, setData] = useState(defaultValue);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const serializedParams = JSON.stringify(params);
 
   useEffect(() => {
     let isMounted = true;
@@ -13,7 +14,7 @@ export function useApi({ url, params = {}, defaultValue = [] }) {
     setError(null);
 
     apiClient
-      .get(url, { params })
+      .get(url, { params: JSON.parse(serializedParams) })
       .then((response) => {
         if (isMounted) {
           setData(response.data);
@@ -33,7 +34,7 @@ export function useApi({ url, params = {}, defaultValue = [] }) {
     return () => {
       isMounted = false;
     };
-  }, [url, JSON.stringify(params)]);
+  }, [url, serializedParams]);
 
   return { data, loading, error };
 }

@@ -8,7 +8,7 @@ import { useApi } from "../hooks/useApi";
 
 const Author = () => {
   const { authorId } = useParams();
-  const { data: author, loading } = useApi({
+  const { data: author } = useApi({
     url: ENDPOINTS.author,
     params: { author: authorId }
   });
