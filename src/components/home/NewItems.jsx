@@ -5,9 +5,13 @@ import CountdownTimer from "../UI/CountdownTimer";
 import Skeleton from "../UI/Skeleton";
 import { useApi } from "../../hooks/useApi";
 import { ENDPOINTS } from "../../api/endpoints";
+import AOS from 'aos';
+import 'aos/dist/aos.css';
+
+AOS.init();
 
 const NewItemSkeleton = () => (
-  <div className="new-item-slide">
+  <div data-aos="fade-up" data-aos-delay="200" data-aos-duration="1000" className="new-item-slide">
     <div className="nft__item">
       <div className="author_list_pp">
         <Skeleton width="50px" height="50px" borderRadius="50%" />
@@ -40,7 +44,7 @@ const NewItems = () => {
     <section id="section-items" className="no-bottom">
       <div className="container">
         <div className="row">
-          <div className="col-lg-12">
+          <div data-aos="fade-in" data-aos-delay="200" data-aos-duration="1000" className="col-lg-12">
             <div className="text-center">
               <h2>New Items</h2>
               <div className="small-border bg-color-2"></div>
@@ -52,7 +56,7 @@ const NewItems = () => {
                 <NewItemSkeleton key={index} />
               ))
             : items.map((item) => (
-            <div className="new-item-slide" key={item.id}>
+            <div data-aos="fade-up" data-aos-delay="200" data-aos-duration="1000" className="new-item-slide" key={item.id}>
               <div className="nft__item">
                 <div className="author_list_pp">
                   <Link

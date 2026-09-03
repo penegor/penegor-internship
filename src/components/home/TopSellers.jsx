@@ -3,10 +3,14 @@ import { Link } from "react-router-dom";
 import Skeleton from "../UI/Skeleton";
 import { useApi } from "../../hooks/useApi";
 import { ENDPOINTS } from "../../api/endpoints";
+import AOS from 'aos';
+import 'aos/dist/aos.css';
+
+AOS.init();
 
 const TopSellerSkeleton = () => (
   <li>
-    <div className="author_list_pp">
+    <div data-aos="fade-left" data-aos-delay="200" data-aos-duration="1000" className="author_list_pp">
       <Skeleton width="50px" height="50px" borderRadius="50%" />
     </div>
     <div className="author_list_info">
@@ -32,13 +36,13 @@ const TopSellers = () => {
       <div className="container">
         <div className="row">
           <div className="col-lg-12">
-            <div className="text-center">
+            <div data-aos="fade-in" data-aos-delay="200" data-aos-duration="1000" className="text-center">
               <h2>Top Sellers</h2>
               <div className="small-border bg-color-2"></div>
             </div>
           </div>
           <div className="col-md-12">
-            <ol className="author_list">
+            <ol data-aos="fade-left" data-aos-delay="200" data-aos-duration="1000" className="author_list">
               {loading
                 ? Array.from({ length: 12 }, (_, index) => (
                     <TopSellerSkeleton key={index} />
