@@ -6,6 +6,10 @@ import Skeleton from "../UI/Skeleton";
 import CountdownTimer from "../UI/CountdownTimer";
 import { useApi } from "../../hooks/useApi";
 import { ENDPOINTS } from "../../api/endpoints";
+import AOS from 'aos';
+import 'aos/dist/aos.css';
+
+AOS.init();
 
 const ExploreItemSkeleton = () => (
   <div
@@ -71,6 +75,7 @@ const ExploreItems = () => {
         : visibleItems.map((item, index) => (
             <div
               key={item.id || index}
+               data-aos="fade-in" data-aos-delay="200" data-aos-duration="1000"
               className="d-item col-lg-3 col-md-6 col-sm-6 col-xs-12"
               style={{ display: "block", backgroundSize: "cover" }}
             >

@@ -4,9 +4,13 @@ import Carousel from "../UI/Carousel";
 import Skeleton from "../UI/Skeleton";
 import { useApi } from "../../hooks/useApi";
 import { ENDPOINTS } from "../../api/endpoints";
+import AOS from 'aos';
+import 'aos/dist/aos.css';
+
+AOS.init();
 
 const CollectionSkeleton = () => (
-  <div className="hot-collection-slide">
+  <div data-aos="fade-up" data-aos-delay="200" data-aos-duration="1000" className="hot-collection-slide">
     <div className="nft_coll">
       <Skeleton width="100%" height="200px" borderRadius="10px 10px 0 0" />
 
@@ -36,7 +40,7 @@ const HotCollections = () => {
     <section id="section-collections" className="no-bottom">
       <div className="container">
         <div className="row">
-          <div className="col-lg-12">
+          <div data-aos="fade-in" data-aos-delay="200" data-aos-duration="1000" className="col-lg-12">
             <div className="text-center">
               <h2>Hot Collections</h2>
               <div className="small-border bg-color-2"></div>
@@ -49,7 +53,7 @@ const HotCollections = () => {
                     .fill(null)
                     .map((_, index) => <CollectionSkeleton key={index} />)
                 : collections.map((collection) => (
-                    <div className="hot-collection-slide" key={collection.id}>
+                    <div data-aos="fade-up" data-aos-delay="200" data-aos-duration="1000" className="hot-collection-slide" key={collection.id}>
                       <div className="nft_coll">
                         <div className="nft_wrap">
                           <Link to={`/item-details/${collection.nftId}`}>
